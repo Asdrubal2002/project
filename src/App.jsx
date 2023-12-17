@@ -16,6 +16,8 @@ import Conditions from './containers/Home/Conditions.jsx';
 import Dashboard from './containers/Profile/Dashboard.jsx';
 
 import Mall from './containers/Home/Mall.jsx';
+import StoreDetail from './containers/Store/StoreDetail.jsx';
+
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
         <Route exact path='/dashboard' element={<Dashboard/>}/>
 
         <Route exact path='/mall' element={<Mall/>}/>
+        <Route exact path='/store/:storeSlug' element={<StoreDetail/>}/>
+
 
 
 

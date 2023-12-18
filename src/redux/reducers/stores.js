@@ -8,7 +8,9 @@ import {
     SEARCH_STORES_SUCCESS,
     SEARCH_STORES_FAIL,
     GET_STORES_BY_ARRIVAL_SUCCESS,
-    GET_STORES_BY_ARRIVAL_FAIL
+    GET_STORES_BY_ARRIVAL_FAIL,
+    SET_STORE_LOADING,
+    REMOVE_STORE_LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -17,12 +19,23 @@ const initialState = {
     store: null,
     search_stores: null,
     related_stores: null,
+    loading: false
 };
 
 export default function Stores(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case SET_STORE_LOADING:
+            return {
+                ...state,
+                loading: true
+            }
+        case REMOVE_STORE_LOADING:
+            return {
+                ...state,
+                loading: false
+            }
         case GET_STORES_SUCCESS:
             return {
                 ...state,

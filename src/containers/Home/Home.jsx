@@ -1,28 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Layout from '../../hocs/Layout'
-import { Link } from 'react-router-dom'
-import { Typewriter } from 'react-simple-typewriter'
-
 import { connect } from 'react-redux'
+import { get_stores_by_arrival } from '../../redux/actions/stores';
+import Banner from '../../components/home/Banner';
+import Stores_arrivals from '../../components/home/Store_arrivals';
+import Footer from '../../components/home/Footer';
+import LoadingStores from '../../components/home/LoadingStores'
 
-import { get_stores_by_arrival } from '../../redux/actions/stores'
-import Banner from '../../components/home/Banner'
-import Stores_arrivals from '../../components/home/Store_arrivals'
-import Footer from '../../components/home/Footer'
-
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
-
-const Home = ({ get_stores_by_arrival, stores_arrival }) => {
+const Home = ({ get_stores_by_arrival, stores_arrival, loading }) => {
 
   useEffect(() => {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     get_stores_by_arrival();
 
   }, []);
@@ -30,15 +18,25 @@ const Home = ({ get_stores_by_arrival, stores_arrival }) => {
 
   return (
     <Layout>
-      <Banner/>
-      <Stores_arrivals data={stores_arrival}/>
-      <Footer/>
+      <Banner />
+      <div className="z-0">
+        <div className="relative pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
+
+          {loading ?
+            <LoadingStores />
+            :
+            <Stores_arrivals data={stores_arrival} />
+          }
+        </div>
+      </div>
+      <Footer />
     </Layout>
   )
 }
 
 const mapStateToProps = state => ({
-  stores_arrival: state.Stores.stores_arrival
+  stores_arrival: state.Stores.stores_arrival,
+  loading: state.Stores.loading
 })
 
 export default connect(mapStateToProps, {

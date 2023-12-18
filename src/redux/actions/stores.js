@@ -9,7 +9,9 @@ import {
     SEARCH_STORES_SUCCESS,
     SEARCH_STORES_FAIL,
     GET_STORES_BY_ARRIVAL_SUCCESS,
-    GET_STORES_BY_ARRIVAL_FAIL
+    GET_STORES_BY_ARRIVAL_FAIL,
+    SET_STORE_LOADING,
+    REMOVE_STORE_LOADING
 } from './types';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -44,6 +46,10 @@ export const get_stores = () => async dispatch => {
 }
 
 export const get_store = (storeSlug) => async dispatch => {
+    dispatch({
+        type:SET_STORE_LOADING
+    });
+
     const config = {
         headers: {
             'Accept': 'application/json'
@@ -63,9 +69,15 @@ export const get_store = (storeSlug) => async dispatch => {
                 type: GET_STORE_FAIL
             });
         }
+        dispatch({
+            type: REMOVE_STORE_LOADING
+        });
     } catch (err) {
         dispatch({
             type: GET_STORE_FAIL
+        });
+        dispatch({
+            type: REMOVE_STORE_LOADING
         });
     }
 }
@@ -131,6 +143,10 @@ export const get_search_stores = (search, category_id) => async dispatch => {
 }
 
 export const get_stores_by_arrival = () => async dispatch => {
+    dispatch({
+        type:SET_STORE_LOADING
+    });
+
     const config = {
         headers: {
             'Accept': 'application/json'
@@ -150,9 +166,15 @@ export const get_stores_by_arrival = () => async dispatch => {
                 type: GET_STORES_BY_ARRIVAL_FAIL
             });
         }
+        dispatch({
+            type: REMOVE_STORE_LOADING
+        });
     } catch(err) {
         dispatch({
             type: GET_STORES_BY_ARRIVAL_FAIL
+        });
+        dispatch({
+            type: REMOVE_STORE_LOADING
         });
     }
 }

@@ -8,7 +8,7 @@ export default function Stores_arrivals({
 
         <div className="relative max-w-7xl mx-auto">
             <div className="text-center">
-                <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl">
+                <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl pt-5">
                     Tiendas
                 </h2>
             </div>
@@ -36,7 +36,7 @@ export default function Stores_arrivals({
 
                                     </Link>
 
-                                    <Link to={`store/${store.slug}`} className="block mt-2">
+                                    <Link to={`/store/${store.slug}`} className="block mt-2">
                                         <p className="text-xl font-semibold text-gray-200">
                                             {store.name}
                                         </p>
@@ -53,7 +53,7 @@ export default function Stores_arrivals({
                                 </div>
                                 <div className="mt-6 flex items-center">
                                     <div className="flex-shrink-0">
-                                        <Link to={`store/${store.slug}`}>
+                                        <Link to={`/store/${store.slug}`}>
                                             <img className="h-10 w-10 rounded-full"
                                                 src={store.logo}
                                                 alt="" />

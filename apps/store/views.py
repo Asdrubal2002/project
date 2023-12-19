@@ -100,7 +100,7 @@ class ListSearchView(APIView):
         else:
             # Si hay criterio de busqueda, filtramos con dicho criterio usando Q
             search_results = Store.objects.filter(
-                Q(description__icontains=search) | Q(name__icontains=search)
+                Q(description__icontains=search) | Q(name__icontains=search) | Q(location__icontains=search)
             )
 
         if category_id == 0:

@@ -52,7 +52,6 @@ class Store(models.Model):
     delivery = models.BooleanField(default=False)
     nit = models.CharField(max_length=100, blank=False, null=False)
     verified = models.BooleanField(default=False)
-    followers = models.ManyToManyField(User, blank=True, related_name="followers")
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(default=timezone.now)
     url_pay = models.URLField(blank=True, null=True)

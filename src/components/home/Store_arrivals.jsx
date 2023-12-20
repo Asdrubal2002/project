@@ -8,7 +8,7 @@ export default function Stores_arrivals({
 
         <div className="relative max-w-7xl mx-auto">
             <div className="text-center">
-                <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl pt-5">
+                <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl">
                     Tiendas
                 </h2>
             </div>

@@ -1,12 +1,14 @@
 import Layout from "../../hocs/Layout"
 
-import { useEffect, useState } from 'react'
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
+import { Fragment, useEffect, useState } from 'react'
+import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
+import { MagnifyingGlassIcon, XMarkIcon, Bars4Icon, Bars2Icon, ArrowDownIcon, ArrowUpIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 
 import { connect } from 'react-redux'
 import { get_categories } from "../../redux/actions/store_categories"
 import { get_stores, get_search_stores } from "../../redux/actions/stores"
-import { Navigate } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
+import Stores_arrivals from "../../components/home/Store_arrivals"
 import SearchBox from "../../components/store/SearchBox"
 import StoreCard from "../../components/store/StoreCard"
 import { ListStoreCategoriesMobile } from "./ListStoreCategeoriesMobile"
@@ -17,7 +19,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const StoreResults = ({
+const StoreResultsTwo = ({
   get_categories,
   categories,
   get_stores,
@@ -61,7 +63,7 @@ const StoreResults = ({
   }
 
   if (render) {
-    return <Navigate to='/search_stores' />;
+    return <Navigate to='/search/stores' />;
   }
 
   const showStores = () => {
@@ -206,4 +208,4 @@ export default connect(mapStateToProps, {
   get_categories,
   get_stores,
   get_search_stores
-})(StoreResults)
+})(StoreResultsTwo)

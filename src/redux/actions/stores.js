@@ -45,6 +45,34 @@ export const get_stores = () => async dispatch => {
     }
 }
 
+export const get_stores_list_page = (page) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+
+    try {
+        const res = await axios.get(`${apiUrl}/api/store/get-stores/list?p=$${page}`, config);
+
+        if (res.status === 200) {
+            dispatch({
+                type: GET_STORES_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: GET_STORES_FAIL
+            });
+        }
+
+    } catch (err) {
+        dispatch({
+            type: GET_STORES_FAIL
+        });
+    }
+}
+
 export const get_store = (storeSlug) => async dispatch => {
     dispatch({
         type:SET_STORE_LOADING

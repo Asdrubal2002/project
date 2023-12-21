@@ -14,7 +14,6 @@ import LoadingStores from "../../components/home/LoadingStores"
 import LoadingCategoryStore from "../../components/store/LoadingCategoryStore"
 import { ListStoreCategoriesDesktop } from "../../components/store/ListStoreCategoriesDesktop"
 import { ListStoreCategoriesMobile } from "../../components/store/ListStoreCategeoriesMobile"
-import SmallSetPagination from "../../components/pagination/SmallSetPagination"
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -131,7 +130,7 @@ const Mall = ({
                     />
 
                     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="relative z-10 flex items-baseline justify-between pt-14 pb-6 border-b border-gray-200">
+                        <div className="relative z-10 flex items-baseline justify-between pt-14 pb-6 border-b border-stone-600">
                             <div className="w-3/4" >
                                 <SearchBox
                                     search={search}

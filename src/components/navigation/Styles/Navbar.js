@@ -26,7 +26,7 @@ export const MessajeNavbar = tw.p`
 
 export const Contenedor1 = tw.div`
     border-b 
-    border-gray-200
+    border-stone-600
 `;
 
 export const Contenedor2 = tw.div`

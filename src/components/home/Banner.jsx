@@ -5,7 +5,7 @@ import { Typewriter } from 'react-simple-typewriter'
 export default function Banner() {
     return (
         <div className="z-0">
-        <div className="relative isolate px-6 pt-10 lg:px-8 border-b border-gray-900 p-32">
+        <div className="relative isolate px-6 pt-10 lg:px-8 border-b border-stone-900 p-32">
           <div className="mx-auto max-w-2xl py-32 sm:py-10 lg:py-10 z-0">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="z-0 relative rounded-full px-3 py-1 text-sm leading-6 text-color_letra_blanca ring-1 ring-gray-900/10 hover:ring-gray-900/20">

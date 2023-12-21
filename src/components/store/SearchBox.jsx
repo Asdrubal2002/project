@@ -31,7 +31,7 @@ const SearchBox = ({
             cursor-default
             no-underline
             "
-                        placeholder="Busca tu localidad, barrio, estado"
+                        placeholder="Busca tu localidad, barrio, estado, tienda"
                     />
                     <div className="absolute inset-y-0 left-0  items-center">
                         <label htmlFor="currency" className="sr-only">

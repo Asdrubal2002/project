@@ -18,7 +18,7 @@ const StoreCard = ({ store }) => {
                 <div className="flex-1">
                     <Link to="/" className="text-sm font-medium text-azul_corp_ho">
 
-                        {store.category}
+                        {store.category.name}
 
                     </Link>
 

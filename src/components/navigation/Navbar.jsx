@@ -429,7 +429,7 @@ function Navbar({ isAuthenticated, user, logout }) {
 
                                         <NavLink
                                             to={'/mall'}
-                                            className={window.location.pathname==='/'?' flex items-center text-sm font-medium text-gray-200 hover:text-gray-400':'flex items-center text-sm font-medium text-gray-400 hover:text-gray-200'}
+                                            className={window.location.pathname === '/' ? ' flex items-center text-sm font-medium text-gray-200 hover:text-gray-400' : 'flex items-center text-sm font-medium text-gray-400 hover:text-gray-200'}
                                         >
                                             Centro comercial
                                         </NavLink>

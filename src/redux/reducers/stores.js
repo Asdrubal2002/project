@@ -19,7 +19,10 @@ const initialState = {
     store: null,
     search_stores: null,
     related_stores: null,
-    loading: false
+    loading: false,
+    count:null,
+    next:null,
+    previous:null
 };
 
 export default function Stores(state = initialState, action) {
@@ -39,17 +42,23 @@ export default function Stores(state = initialState, action) {
         case GET_STORES_SUCCESS:
             return {
                 ...state,
-                stores: payload.stores
+                stores: payload.results.stores,
+                count: payload.count,
+                next: payload.next,
+                previous: payload.previous
             }
         case GET_STORES_FAIL:
             return {
                 ...state,
-                stores: null
+                stores: null,
+                count: null,
+                next: null,
+                previous: null
             }
         case GET_STORES_BY_ARRIVAL_SUCCESS:
             return {
                 ...state,
-                stores_arrival: payload.stores
+                stores_arrival: payload.results.stores
             }
         case GET_STORES_BY_ARRIVAL_FAIL:
             return {
@@ -79,12 +88,18 @@ export default function Stores(state = initialState, action) {
         case SEARCH_STORES_SUCCESS:
             return {
                 ...state,
-                search_stores: payload.search_stores
+                search_stores: payload.results.stores,
+                count: payload.count,
+                next: payload.next,
+                previous: payload.previous
             }
         case SEARCH_STORES_FAIL:
             return {
                 ...state,
-                search_stores: null
+                search_stores: null,
+                count: null,
+                next: null,
+                previous: null
             }
         default:
             return state

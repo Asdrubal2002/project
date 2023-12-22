@@ -34,9 +34,9 @@ export const ListStoreCategoriesDesktop = ({
                                         {category.sub_categories.map((sub_category) => (
                                             <div key={sub_category.id} className="flex items-center ml-2">
                                                 <input
-                                                    name='category_id'
+                                                    name='slug'
                                                     type='radio'
-                                                    value={sub_category.id.toString()}
+                                                    value={sub_category.slug}
                                                     onChange={e => onChange(e)}
                                                     className="h-4 w-4 border-gray-300 rounded text-indigo-600"
                                                 />

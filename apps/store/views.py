@@ -10,6 +10,9 @@ from apps.store.models import Store
 from apps.store.serializers import StoreSerializer
 from apps.store_category.models import Category
 
+from .pagination import SmallSetPagination, MediumSetPagination, LargeSetPagination
+
+
 # Create your views here.
 
 class StoreDetailview(APIView):
@@ -68,11 +71,12 @@ class ListStoresView(APIView):
         else:
             stores = Store.objects.order_by(sortBy).all()
 
-        
-        stores = StoreSerializer(stores, many=True)
+        paginator = SmallSetPagination()
+        results = paginator.paginate_queryset(stores, request)
+        serializer = StoreSerializer(results, many=True)
 
         if stores:
-            return Response({'stores': stores.data}, status=status.HTTP_200_OK)
+            return paginator.get_paginated_response({'stores': serializer.data})
         else:
             return Response(
                 {'error': 'No stores to list'},
@@ -80,71 +84,60 @@ class ListStoresView(APIView):
 
 class ListSearchView(APIView):
     permission_classes = (permissions.AllowAny, )
+    def get(self, request, format=None):
+        if Store.objects.all().exists():
+            slug = request.query_params.get('c')
+            search = request.query_params.get('s')
 
-    def post(self, request, format=None):
-        data = self.request.data
-
-        try:
-            category_id = int(data['category_id'])
-        except:
-            return Response(
-                {'error': 'Chose a city and category'},
-                status=status.HTTP_404_NOT_FOUND)
-
-        search = data['search']
-
-        # Chequear si algo input ocurrio en la busqueda
-        if len(search) == 0:
-            # mostrar todos los productos si no hay input en la busqueda
-            search_results = Store.objects.order_by('dislikes').all()
-        else:
-            # Si hay criterio de busqueda, filtramos con dicho criterio usando Q
-            search_results = Store.objects.filter(
-                Q(description__icontains=search) | Q(name__icontains=search) | Q(location__icontains=search)
-            )
-
-        if category_id == 0:
-            search_results = StoreSerializer(search_results, many=True)
-            return Response(
-                {'search_stores': search_results.data},
-                status=status.HTTP_200_OK)
-        
-        # revisar si existe categoria
-        if not Category.objects.filter(id=category_id).exists():
-            return Response(
-                {'error': 'Category not found'},
-                status=status.HTTP_404_NOT_FOUND)
-
-        category = Category.objects.get(id=category_id)
-
-        # si la categoria tiene apdre, fitlrar solo por la categoria y no el padre tambien
-        if category.parent:
-            search_results = search_results.order_by(
-                '-likes'
-            ).filter(category=category)
-        
-        else:
-            # si esta categoria padre no tiene hijjos, filtrar solo la categoria
-            if not Category.objects.filter(parent=category).exists():
-                search_results = search_results.order_by(
-                    '-likes'
-                ).filter(category=category)
-        
+            if len(search) == 0:
+                search_results = Store.objects.order_by('likes').all()
             else:
-                categories = Category.objects.filter(parent=category)
-                filtered_categories = [category]
+                search_results = Store.objects.filter(
+                    Q(description__icontains=search) | 
+                    Q(name__icontains=search) | 
+                    Q(location__icontains=search)
+                )
 
-                for cat in categories:
-                    filtered_categories.append(cat)
-                
-                filtered_categories = tuple(filtered_categories)
-
-                search_results = search_results.order_by(
-                    '-likes'
-                ).filter(category__in=filtered_categories)
+            if len(slug) == 0:
+                paginator = SmallSetPagination()
+                results = paginator.paginate_queryset(search_results, request)
+                serializer = StoreSerializer(results, many=True)
+                return paginator.get_paginated_response({'stores': serializer.data})
+            
+            if not Category.objects.filter(slug=slug).exists():
+                    return Response(
+                        {'error': 'Category not found'},
+                        status=status.HTTP_404_NOT_FOUND)
         
-        search_results = StoreSerializer(search_results, many=True)
-        return Response({'search_stores': search_results.data}, status=status.HTTP_200_OK)
+            category = Category.objects.get(slug=slug)
+
+            # si la categoria tiene apdre, fitlrar solo por la categoria y no el padre tambien
+            if category.parent:
+                search_results = search_results.order_by('-likes').filter(category=category)
+            else:
+            # si esta categoria padre no tiene hijjos, filtrar solo la categoria
+                if not Category.objects.filter(parent=category).exists():
+                    search_results = search_results.order_by('-likes').filter(category=category)
+                else:
+                    categories = Category.objects.filter(parent=category)
+                    filtered_categories = [category]
+
+                    for cat in categories:
+                        filtered_categories.append(cat)
+                    
+                    filtered_categories = tuple(filtered_categories)
+
+                    search_results = search_results.order_by(
+                        '-likes'
+                    ).filter(category__in=filtered_categories)
+
+          
+            paginator = SmallSetPagination()
+            results = paginator.paginate_queryset(search_results, request)
+            serializer = StoreSerializer(results, many=True)
+            return paginator.get_paginated_response({'stores': serializer.data})
+        else:
+            return Response({'error':'No posts found'}, status=status.HTTP_404_NOT_FOUND)
 
 class ListRelatedView(APIView):
     permission_classes = (permissions.AllowAny, )

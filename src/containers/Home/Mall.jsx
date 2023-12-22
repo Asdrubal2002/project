@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon, Adjustments
 
 import { connect } from 'react-redux'
 import { get_categories } from "../../redux/actions/store_categories"
-import { get_stores, get_search_stores } from "../../redux/actions/stores"
+import { get_stores, get_search_stores, get_stores_list_page } from "../../redux/actions/stores"
 import { Navigate } from "react-router-dom"
 import SearchBox from "../../components/store/SearchBox"
 import StoreCard from "../../components/store/StoreCard"
@@ -14,6 +14,7 @@ import LoadingStores from "../../components/home/LoadingStores"
 import LoadingCategoryStore from "../../components/store/LoadingCategoryStore"
 import { ListStoreCategoriesDesktop } from "../../components/store/ListStoreCategoriesDesktop"
 import { ListStoreCategoriesMobile } from "../../components/store/ListStoreCategeoriesMobile"
+import SmallSetPagination from "../../components/pagination/SmallSetPagination"
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -27,7 +28,11 @@ const Mall = ({
     get_search_stores,
     search_stores,
     loading,
-    loading_category_store
+    loading_category_store,
+    count,
+    next,
+    previous,
+    get_stores_list_page
 }) => {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const [filtered, setFiltered] = useState(false)
@@ -35,30 +40,31 @@ const Mall = ({
 
     const [formData, setFormData] = useState({
         search: '',
-        category_id: '0'
+        slug: ''
     })
     const {
-        category_id,
+        slug,
         search
     } = formData
 
     useEffect(() => {
         get_categories()
-        get_stores()
-        window.scrollTo(0, 0)
+        get_stores(),
+            window.scrollTo(0, 0)
     }, [])
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
     const onSubmit = e => {
         e.preventDefault()
-        get_search_stores(search, category_id)
+        get_search_stores(search, slug)
         setFiltered(true)
     }
 
     const onBuscar = e => {
         e.preventDefault()
-        get_search_stores(search, category_id)
+        console.log(slug, "Llega el slug y ", search)
+        get_search_stores(search, slug)
         setRender(!render)
     }
 
@@ -180,6 +186,12 @@ const Mall = ({
                                 </div>
                             </div>
                         </div>
+                        <div className="pb-10 ">
+                            <SmallSetPagination 
+                            list_page={get_stores_list_page} 
+                            list={stores} 
+                            count={count && count} />
+                        </div>
                     </main>
                 </div>
             </div>
@@ -192,11 +204,15 @@ const mapStateToProps = state => ({
     stores: state.Stores.stores,
     search_stores: state.Stores.search_stores,
     loading: state.Stores.loading,
-    loading_category_store: state.Store_Categories.loading_category_store
+    loading_category_store: state.Store_Categories.loading_category_store,
+    count: state.Stores.count,
+    next: state.Stores.next,
+    previous: state.Stores.previous
 })
 
 export default connect(mapStateToProps, {
     get_categories,
     get_stores,
-    get_search_stores
+    get_search_stores,
+    get_stores_list_page
 })(Mall)

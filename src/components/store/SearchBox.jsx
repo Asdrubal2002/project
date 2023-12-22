@@ -39,7 +39,7 @@ const SearchBox = ({
                         </label>
                         <select
                             onChange={e => onChange(e)}
-                            name='category_id'
+                            name='slug'
                             className="h-full rounded-full  bg-transparent py-0 pl-2 pr-7 text-gray-500 sm:text-sm focus:outline-none "
                         >
                             <option value={0}>Categorias</option>
@@ -48,7 +48,7 @@ const SearchBox = ({
                                 categories !== null &&
                                 categories !== undefined &&
                                 categories.map((category, index) => (
-                                    <option key={index} value={category.id}>
+                                    <option key={index} value={category.slug}>
                                         {category.name}
                                     </option>
                                 ))

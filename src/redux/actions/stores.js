@@ -53,7 +53,7 @@ export const get_stores_list_page = (page) => async dispatch => {
     };
 
     try {
-        const res = await axios.get(`${apiUrl}/api/store/get-stores/list?p=$${page}`, config);
+        const res = await axios.get(`${apiUrl}/api/store/get-stores?p=${page}`, config);
 
         if (res.status === 200) {
             dispatch({
@@ -110,34 +110,7 @@ export const get_store = (storeSlug) => async dispatch => {
     }
 }
 
-export const get_related_stores = (storeSlug) => async dispatch => {
-    const config = {
-        headers: {
-            'Accept': 'application/json'
-        }
-    };
-
-    try {
-        const res = await axios.get(`${apiUrl}/api/store/related/${storeSlug}`, config);
-
-        if (res.status === 200 && !res.data.error) {
-            dispatch({
-                type: RELATED_STORES_SUCCESS,
-                payload: res.data
-            });
-        } else {
-            dispatch({
-                type: RELATED_STORES_FAIL
-            });
-        }
-    } catch (err) {
-        dispatch({
-            type: RELATED_STORES_FAIL
-        });
-    }
-}
-
-export const get_search_stores = (search, category_id) => async dispatch => {
+export const get_search_stores = (search, slug) => async dispatch => {
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -145,13 +118,36 @@ export const get_search_stores = (search, category_id) => async dispatch => {
         }
     };
 
-    const body = JSON.stringify({
-        search,
-        category_id
-    });
+    try {
+        const res = await axios.get(`${apiUrl}/api/store/search?c=${slug}&s=${search}`, config);
+
+        if (res.status === 200) {
+            dispatch({
+                type: SEARCH_STORES_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: SEARCH_STORES_FAIL
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: SEARCH_STORES_FAIL
+        });
+    }
+}
+
+export const get_search_stores_page = (search, slug, page) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    };
 
     try {
-        const res = await axios.post(`${apiUrl}/api/store/search`, body, config);
+        const res = await axios.get(`${apiUrl}/api/store/search?c=${slug}&p=${page}&s=${search}`, config);
 
         if (res.status === 200) {
             dispatch({
@@ -182,7 +178,7 @@ export const get_stores_by_arrival = () => async dispatch => {
     };
 
     try {
-        const res = await axios.get(`${apiUrl}/api/store/get-stores?order=asc&limit=3`, config);
+        const res = await axios.get(`${apiUrl}/api/store/get-stores?order=asc&limit=6`, config);
     
         if (res.status === 200) {
             dispatch({
@@ -206,3 +202,33 @@ export const get_stores_by_arrival = () => async dispatch => {
         });
     }
 }
+
+
+export const get_related_stores = (storeSlug) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+
+    try {
+        const res = await axios.get(`${apiUrl}/api/store/related/${storeSlug}`, config);
+
+        if (res.status === 200 && !res.data.error) {
+            dispatch({
+                type: RELATED_STORES_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: RELATED_STORES_FAIL
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: RELATED_STORES_FAIL
+        });
+    }
+}
+
+

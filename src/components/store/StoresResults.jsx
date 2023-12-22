@@ -5,13 +5,14 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 
 import { connect } from 'react-redux'
 import { get_categories } from "../../redux/actions/store_categories"
-import { get_stores, get_search_stores } from "../../redux/actions/stores"
+import { get_stores, get_search_stores, get_search_stores_page } from "../../redux/actions/stores"
 import { Navigate } from "react-router-dom"
 import SearchBox from "../../components/store/SearchBox"
 import StoreCard from "../../components/store/StoreCard"
 import { ListStoreCategoriesMobile } from "./ListStoreCategeoriesMobile"
 import LoadingCategoryStore from "./LoadingCategoryStore"
 import { ListStoreCategoriesDesktop } from "./ListStoreCategoriesDesktop"
+import SmallSetPagination from "../pagination/SmallSetPagination"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -25,7 +26,11 @@ const StoreResults = ({
   get_search_stores,
   search_stores,
   loading,
-  loading_category_store
+  loading_category_store,
+  count,
+  next,
+  previous,
+  get_search_stores_page
 }) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [filtered, setFiltered] = useState(false)
@@ -186,6 +191,12 @@ const StoreResults = ({
                 </div>
               </div>
             </div>
+            <div className="pb-10 ">
+                            <SmallSetPagination 
+                            list_page={get_search_stores_page} 
+                            list={stores} 
+                            count={count && count} />
+                        </div>
           </main>
         </div>
       </div>
@@ -198,12 +209,16 @@ const mapStateToProps = state => ({
   stores: state.Stores.stores,
   search_stores: state.Stores.search_stores,
   loading: state.Stores.loading,
-  loading_category_store: state.Store_Categories.loading_category_store
+  loading_category_store: state.Store_Categories.loading_category_store,
+  count: state.Stores.count,
+  next: state.Stores.next,
+  previous: state.Stores.previous
 
 })
 
 export default connect(mapStateToProps, {
   get_categories,
   get_stores,
-  get_search_stores
+  get_search_stores,
+  get_search_stores_page
 })(StoreResults)

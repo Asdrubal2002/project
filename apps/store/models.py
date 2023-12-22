@@ -59,8 +59,8 @@ class Store(models.Model):
     slug =  models.SlugField(max_length=255, unique=True, default=uuid.uuid4)
     # likes = models.ManyToManyField(User, blank=True, related_name='likes')
     # dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
-    likes = models.PositiveIntegerField(null=True)
-    dislikes = models.PositiveIntegerField(null=True)
+    likes = models.IntegerField(default=0, blank=True)
+    dislikes = models.IntegerField(default=0, blank=True)
 
     def get_photo(self):
         if self.logo:

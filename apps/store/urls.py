@@ -4,7 +4,9 @@ from .views import StoreDetailview, ListStoresView, ListSearchView, ListRelatedV
 urlpatterns = [
     path('store/<storeSlug>', StoreDetailview.as_view()),
     path('get-stores', ListStoresView.as_view()),
+
     path('search', ListSearchView.as_view()),
+    
     path('related/<storeSlug>', ListRelatedView.as_view()),
 
     #4:40:12 otra busqueda

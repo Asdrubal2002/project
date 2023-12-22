@@ -527,12 +527,13 @@ function Navbar({ isAuthenticated, user, logout }) {
 
 
                                         </> : <>
-                                            <Links to='/login'>
-                                                Ingresar
-                                            </Links>
-                                            <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                                             <Links to="/signup">
                                                 Unirse
+                                            </Links>
+                                            <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+
+                                            <Links to='/login'>
+                                                Ingresar
                                             </Links>
 
                                         </>}

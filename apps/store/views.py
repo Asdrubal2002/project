@@ -204,4 +204,47 @@ class ListRelatedView(APIView):
                 {'error': 'No related stores found'},
                 status=status.HTTP_200_OK)
 
-   
+class ListStoreByCategoryView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, format=None):
+        if Store.objects.all().exists():
+           
+            slug = request.query_params.get('slug')
+            category = Category.objects.get(slug=slug)
+            print(category)
+            
+            stores = Store.objects.order_by('-likes').all()
+
+        # # Si la categoría tiene un padre, filtrar sólo por esta categoría y no por el padre también
+        # if category.parent:
+        #     posts = posts.filter(category=category)
+
+        # # Si la categoría no tiene una categoría padre, significa que ella misma es una categoría padre
+        # else: 
+
+            #Filtrar categoria sola
+            if not Category.objects.filter(parent=category).exists():
+                stores = stores.filter(category=category)
+            # Si esta categoría padre tiene hijos, filtrar por la categoría padre y sus hijos
+            else:
+                sub_categories = Category.objects.filter(parent=category)
+                
+                filtered_categories = [category]
+
+                for cat in sub_categories:
+                    filtered_categories.append(cat)
+
+                filtered_categories = tuple(filtered_categories)
+
+                stores = stores.filter(category__in=filtered_categories)
+
+                print(stores)
+                    
+            paginator = SmallSetPagination()
+            results = paginator.paginate_queryset(stores, request)
+            serializer = StoreSerializer(results, many=True)
+           
+
+            return paginator.get_paginated_response({'stores': serializer.data})
+        else:
+            return Response({'error':'No stores found'}, status=status.HTTP_404_NOT_FOUND)

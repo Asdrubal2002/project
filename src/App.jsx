@@ -17,8 +17,8 @@ import Dashboard from './containers/Profile/Dashboard.jsx';
 
 import Mall from './containers/Home/Mall.jsx';
 import StoreDetail from './containers/Store/StoreDetail.jsx';
-import StoresResults from './components/store/StoresResults.jsx';
-import StoreResultsTwo from './components/store/StoreResultsTwo.jsx';
+import Category from './components/store/Category.jsx';
+
 
 
 function App() {
@@ -46,8 +46,11 @@ function App() {
 
         <Route exact path='/mall' element={<Mall/>}/>
         <Route exact path='/store/:storeSlug' element={<StoreDetail/>}/>
-        <Route exact path='/search/stores' element={<StoresResults/>}/>
-        <Route exact path='/search_stores/' element={<StoreResultsTwo/>}/>
+        <Route path="/category/:slug" element={<Category />} />
+
+
+
+
 
 
 

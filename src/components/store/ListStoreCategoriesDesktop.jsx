@@ -1,11 +1,12 @@
 import { Disclosure } from '@headlessui/react'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import { Link, Navigate } from 'react-router-dom'
 
 export const ListStoreCategoriesDesktop = ({
     categories,
     onSubmit,
-    onChange
+
 }) => {
     return (
         <form onSubmit={e => onSubmit(e)} className="hidden lg:block">
@@ -31,21 +32,13 @@ export const ListStoreCategoriesDesktop = ({
                                 </h3>
                                 <Disclosure.Panel className="pt-6">
                                     <div className="space-y-4">
-                                        {category.sub_categories.map((sub_category) => (
-                                            <div key={sub_category.id} className="flex items-center ml-2">
-                                                <input
-                                                    name='slug'
-                                                    type='radio'
-                                                    value={sub_category.slug}
-                                                    onChange={e => onChange(e)}
-                                                    className="h-4 w-4 border-gray-300 rounded text-indigo-600"
-                                                />
-                                                <label
-                                                    htmlFor={sub_category.id}
-                                                    className="ml-3 text-sm text-gray-100"
-                                                >
+                                        {category.sub_categories.map((sub_category, index) => (
+                                            <div key={sub_category.id} className="inline-flex items-center items-center">
+
+                                                <Link key={index} to={`/category/${sub_category.slug}`}
+                                                    className=" px-2 py-2 m-0.5 text-sm font-medium rounded-md shadow-sm text-white bg-stone-900 hover:bg-azul_corp_ho">
                                                     {sub_category.name}
-                                                </label>
+                                                </Link>
                                             </div>
                                         ))}
                                     </div>
@@ -54,11 +47,7 @@ export const ListStoreCategoriesDesktop = ({
                         )}
                     </Disclosure>
                 ))}
-            <button
-                type="submit"
-                className="inline-flex items-center px-20 py-2 m-2 text-sm font-medium rounded-md shadow-sm text-white bg-azul_corp hover:bg-azul_corp_ho">
-                Filtrar categoria
-            </button>
         </form>
     )
 }
+

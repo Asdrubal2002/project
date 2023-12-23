@@ -6,70 +6,43 @@ import { MagnifyingGlassIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon, Adjustments
 
 import { connect } from 'react-redux'
 import { get_categories } from "../../redux/actions/store_categories"
-import { get_stores, get_search_stores, get_stores_list_page } from "../../redux/actions/stores"
-import { Navigate } from "react-router-dom"
-import SearchBox from "../../components/store/SearchBox"
-import StoreCard from "../../components/store/StoreCard"
-import LoadingStores from "../../components/home/LoadingStores"
-import LoadingCategoryStore from "../../components/store/LoadingCategoryStore"
-import { ListStoreCategoriesDesktop } from "../../components/store/ListStoreCategoriesDesktop"
-import { ListStoreCategoriesMobile } from "../../components/store/ListStoreCategeoriesMobile"
-import SmallSetPagination from "../../components/pagination/SmallSetPagination"
+import { get_store_list_category, get_store_list_category_page } from "../../redux/actions/stores"
+import { Navigate, useParams } from "react-router-dom"
+import SearchBox from "./SearchBox"
+import StoreCard from "./StoreCard"
+import LoadingStores from "../home/LoadingStores"
+import LoadingCategoryStore from "./LoadingCategoryStore"
+import { ListStoreCategoriesDesktop } from "./ListStoreCategoriesDesktop"
+import { ListStoreCategoriesMobile } from "./ListStoreCategeoriesMobile"
+import SmallSetPagination from "../pagination/SmallSetPagination"
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const Mall = ({
+const Category= ({
     get_categories,
     categories,
-    get_stores,
+    get_store_list_category,
+    get_store_list_category_page,
     stores,
-    get_search_stores,
-    search_stores,
-    loading,
-    loading_category_store,
     count,
     next,
     previous,
-    get_stores_list_page
 }) => {
-    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-    const [filtered, setFiltered] = useState(false)
-    const [render, setRender] = useState(false);
-
-    const [formData, setFormData] = useState({
-        search: '',
-        slug: ''
-    })
-    const {
-        slug,
-        search
-    } = formData
+    
+    const params = useParams()
+    const slug = params.slug
+    
 
     useEffect(() => {
+        window.scrollTo(0,0)
         get_categories()
-        get_stores(),
-            window.scrollTo(0, 0)
+        get_store_list_category(slug)
     }, [])
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
-    const onSubmit = e => {
-        e.preventDefault()
-        get_search_stores(search, slug)
-        setRender(!render)
-    }
 
-    const onBuscar = e => {
-        e.preventDefault()
-        get_search_stores(search, slug)
-        setRender(!render)
-    }
-
-    if (render) {
-        return <Navigate to='/search/stores' />;
-    }
 
     const showStores = () => {
         let results = []
@@ -108,23 +81,23 @@ const Mall = ({
             <div >
                 <div>
                     {/* Mobile filter dialog */}
-                    <ListStoreCategoriesMobile
+                    {/* <ListStoreCategoriesMobile
                         categories={categories}
                         onSubmit={onSubmit}
                         onChange={onChange}
                         loading_category_store={loading_category_store}
                         mobileFiltersOpen={mobileFiltersOpen}
                         setMobileFiltersOpen={setMobileFiltersOpen}
-                    />
+                    /> */}
 
                     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="relative z-10 flex items-baseline justify-between pt-14 pb-6 border-b border-stone-600">
                             <div className="w-3/4" >
-                                <SearchBox
+                                {/* <SearchBox
                                     search={search}
                                     onChange={onChange}
                                     onSubmit={onBuscar}
-                                    categories={categories} />
+                                    categories={categories} /> */}
                             </div>
                             <div className="flex items-center overflow-hidden mx-auto">
                                 <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl max-lg:hidden">
@@ -145,36 +118,21 @@ const Mall = ({
                         <div aria-labelledby="products-heading" className="pt-6 pb-24">
                             <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
                                 {/* Filters */}
-                                {loading_category_store ?
-                                    <LoadingCategoryStore />
-                                    :
-                                    <>
+                               
                                         <ListStoreCategoriesDesktop
                                             categories={categories}
-                                            onSubmit={onSubmit}
-                                            onChange={onChange}
                                         />
-                                    </>
-                                }
+                                   
                                 {/* Product grid */}
                                 <div className="lg:col-span-3">
-                                    {loading ?
-                                        <LoadingStores />
-                                        :
-                                        <>
-
-                                            {stores && showStores()}
-                                        </>
-                                    }
+                                   
+                                        Categorias {slug}
+                                        {/* {stores && showStores()}2:17:02 */}
+                                       
                                 </div>
                             </div>
                         </div>
-                        <div className="pb-10">
-                            <SmallSetPagination
-                                list_page={get_stores_list_page}
-                                list={stores && stores}
-                                count={count && count} />
-                        </div>
+                      
                     </main>
                 </div>
             </div>
@@ -184,10 +142,7 @@ const Mall = ({
 
 const mapStateToProps = state => ({
     categories: state.Store_Categories.categories,
-    stores: state.Stores.stores,
-    search_stores: state.Stores.search_stores,
-    loading: state.Stores.loading,
-    loading_category_store: state.Store_Categories.loading_category_store,
+    stores: state.Stores.store_list_category,
     count: state.Stores.count,
     next: state.Stores.next,
     previous: state.Stores.previous
@@ -195,7 +150,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     get_categories,
-    get_stores,
-    get_search_stores,
-    get_stores_list_page
-})(Mall)
+    get_store_list_category,
+    get_store_list_category_page
+})(Category)

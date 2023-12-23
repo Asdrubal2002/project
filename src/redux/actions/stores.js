@@ -11,7 +11,9 @@ import {
     GET_STORES_BY_ARRIVAL_SUCCESS,
     GET_STORES_BY_ARRIVAL_FAIL,
     SET_STORE_LOADING,
-    REMOVE_STORE_LOADING
+    REMOVE_STORE_LOADING,
+    GET_CATEGORIES_STORE_SUCCESS,
+    GET_CATEGORIES_STORES_FAIL
 } from './types';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -109,6 +111,65 @@ export const get_store = (storeSlug) => async dispatch => {
         });
     }
 }
+
+export const get_store_list_category = (slug) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+    console.log("Llega aquia", slug)
+
+    try{
+        const res = await axios.get(`${apiUrl}/api/store/by_category?slug=${slug}`, config)
+
+        if(res.status === 200){
+            dispatch({
+                type: GET_CATEGORIES_STORE_SUCCESS,
+                payload: res.data
+            });
+        }else{
+            dispatch({
+                type: GET_CATEGORIES_STORES_FAIL
+            });
+        }
+
+    }catch(err){
+        dispatch({
+            type: GET_CATEGORIES_STORES_FAIL
+        });
+    }
+}
+
+export const get_store_list_category_page = (slug, page) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+
+    try{
+
+        const res = await axios.get(`${apiUrl}/api/store/by_category?slug=${slug}&p=${page}`, config)
+
+        if(res.status === 200){
+            dispatch({
+                type: GET_CATEGORIES_STORE_SUCCESS,
+                payload: res.data
+            });
+        }else{
+            dispatch({
+                type: GET_CATEGORIES_STORES_FAIL
+            });
+        }
+
+    }catch(err){
+        dispatch({
+            type: GET_CATEGORIES_STORES_FAIL
+        });
+    }
+}
+
 
 export const get_search_stores = (search, slug) => async dispatch => {
     const config = {

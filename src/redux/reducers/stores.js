@@ -10,19 +10,22 @@ import {
     GET_STORES_BY_ARRIVAL_SUCCESS,
     GET_STORES_BY_ARRIVAL_FAIL,
     SET_STORE_LOADING,
-    REMOVE_STORE_LOADING
+    REMOVE_STORE_LOADING,
+    GET_CATEGORIES_STORE_SUCCESS,
+    GET_CATEGORIES_STORES_FAIL
 } from "../actions/types";
 
 const initialState = {
     stores: null,
     stores_arrival: null,
+    store_list_category: null,
     store: null,
     search_stores: null,
     related_stores: null,
     loading: false,
-    count:null,
-    next:null,
-    previous:null
+    count: null,
+    next: null,
+    previous: null
 };
 
 export default function Stores(state = initialState, action) {
@@ -84,6 +87,22 @@ export default function Stores(state = initialState, action) {
             return {
                 ...state,
                 related_stores: null
+            }
+        case GET_CATEGORIES_STORE_SUCCESS:
+            return {
+                ...state,
+                store_list_category: payload.results.stores,
+                count: payload.count,
+                next: payload.next,
+                previous: payload.previous,
+            }
+        case GET_CATEGORIES_STORES_FAIL:
+            return {
+                ...state,
+                store_list_category: null,
+                count: null,
+                next: null,
+                previous: null,
             }
         case SEARCH_STORES_SUCCESS:
             return {

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import StoreDetailview, ListStoresView, ListSearchView, ListRelatedView
+from .views import StoreDetailview, ListStoresView, ListSearchView, ListRelatedView, ListStoreByCategoryView
 
 urlpatterns = [
     path('store/<storeSlug>', StoreDetailview.as_view()),
@@ -8,6 +8,10 @@ urlpatterns = [
     path('search', ListSearchView.as_view()),
     
     path('related/<storeSlug>', ListRelatedView.as_view()),
+
+    path('by_category',ListStoreByCategoryView.as_view()),
+
+
 
     #4:40:12 otra busqueda
 

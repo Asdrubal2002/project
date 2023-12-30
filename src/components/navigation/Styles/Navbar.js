@@ -12,11 +12,11 @@ export const NavbarMenu = tw.header`
 
 export const MessajeNavbar = tw.p`
     flex 
-    h-10 
+    h-7 
     items-center 
     justify-center 
     bg-azul_corp 
-    px-4 
+    px-2
     text-sm 
     font-medium 
     text-white 
@@ -95,8 +95,7 @@ export const Links = tw(Link)`
 
 export const LetrasPerfil = tw.span` 
     font-encabezados 
-    text-gray-600 
-    dark:text-gray-300
+    text-gray-300 
 `;
 
 export const NombreModal = tw.div` 

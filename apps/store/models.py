@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from apps.store_category.models import Category
+from apps.locations.models import Ciudad
 from django.conf import settings
 import os
 from django.utils import timezone
@@ -61,6 +62,8 @@ class Store(models.Model):
     # dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
     likes = models.IntegerField(default=0, blank=True)
     dislikes = models.IntegerField(default=0, blank=True)
+    city = models.ForeignKey(Ciudad, on_delete=models.CASCADE)
+
 
     def get_photo(self):
         if self.logo:

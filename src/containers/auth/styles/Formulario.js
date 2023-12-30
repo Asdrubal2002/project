@@ -88,12 +88,8 @@ export const Input = tw.input`
     pl-3 
     pr-10 
     text-white
-    ring-1 
-    ring-gray-700 
     placeholder:text-gray-500 
     focus:outline-none
-    
-    
     sm:text-sm 
     sm:leading-6
 

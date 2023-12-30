@@ -9,6 +9,7 @@ import { Links, Contenedor2, Contenedor1, MessajeNavbar, NavbarMenu, MenusDesple
 
 
 import { connect } from "react-redux";
+import Searcher from '../store/Searcher'
 
 
 const navigation = {
@@ -129,7 +130,7 @@ const navigation = {
         },
     ],
     pages: [
-        { name: 'Compañia', to: '#' },
+        { name: 'Compañia', to: '/' },
         { name: 'Centro comercial', to: '/mall' },
     ],
 }
@@ -304,7 +305,7 @@ function Navbar({ isAuthenticated, user, logout }) {
                 <NavbarMenu>
                     {/* <MessajeNavbar>
                         Hoy es un dia lindo, espera la noticia
-                    </MessajeNavbar> */}
+                    </MessajeNavbar>  */}
 
                     <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <Contenedor1>
@@ -421,7 +422,7 @@ function Navbar({ isAuthenticated, user, logout }) {
 
                                         <Link
 
-                                            to={'/mall'}
+                                            to={'/'}
                                             className="flex items-center text-sm font-medium text-gray-200 hover:text-gray-400"
                                         >
                                             Compañia
@@ -439,6 +440,7 @@ function Navbar({ isAuthenticated, user, logout }) {
                                 <ParteDerechaNavbar>
                                     <ParteDerechaNavbar1>
                                         {isAuthenticated ? <>
+
                                             <div className="ml-4 flow-root lg:ml-6">
                                                 <a href="#" className="group -m-2 flex items-center p-2">
                                                     <ShoppingBagIcon
@@ -449,19 +451,20 @@ function Navbar({ isAuthenticated, user, logout }) {
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </a>
                                             </div>
+                                           
 
-                                            <div className="flex lg:ml-6">
+                                            {/* <div className="flex lg:ml-6">
                                                 <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
                                                     <span className="sr-only">Search</span>
                                                     <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                                                 </a>
-                                            </div>
+                                            </div> */}
                                             <Menu
                                                 as="div"
                                                 className="relative inline-block text-left justify-center items-center"
                                             >
                                                 <div>
-                                                    <Menu.Button className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-300 rounded-full dark:bg-gray-600">
+                                                    <Menu.Button className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-azul_corp rounded-full ">
                                                         {user && user.photo != null ? (
                                                             <img className="h-10 w-10 cover" src={user && user.photo} />
                                                         ) : (

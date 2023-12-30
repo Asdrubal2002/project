@@ -1,201 +1,236 @@
 import Layout from "../../hocs/Layout"
-
-import { Fragment, useEffect, useState } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { MagnifyingGlassIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
-
+import { useEffect, useState, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { get_categories } from "../../redux/actions/store_categories"
-import { get_stores, get_search_stores, get_stores_list_page } from "../../redux/actions/stores"
-import { Navigate } from "react-router-dom"
-import SearchBox from "../../components/store/SearchBox"
-import StoreCard from "../../components/store/StoreCard"
-import LoadingStores from "../../components/home/LoadingStores"
-import LoadingCategoryStore from "../../components/store/LoadingCategoryStore"
-import { ListStoreCategoriesDesktop } from "../../components/store/ListStoreCategoriesDesktop"
-import { ListStoreCategoriesMobile } from "../../components/store/ListStoreCategeoriesMobile"
-import SmallSetPagination from "../../components/pagination/SmallSetPagination"
+import { useParams } from "react-router-dom";
+
+import { get_search_stores, get_search_stores_page } from '../../redux/actions/stores';
+import StoreList from "../../components/store/StoreList";
+
+import { Dialog,  Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import {  FunnelIcon } from '@heroicons/react/24/solid'
+
+import LoadingStores from "../../components/home/LoadingStores";
+import { Helmet } from "react-helmet";
+import Searcher from "../../components/store/Searcher";
+
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 const Mall = ({
-    get_categories,
-    categories,
-    get_stores,
-    stores,
     get_search_stores,
-    search_stores,
-    loading,
-    loading_category_store,
+    get_search_stores_page,
+    stores,
     count,
     next,
     previous,
-    get_stores_list_page
+    loading
+
 }) => {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-    const [filtered, setFiltered] = useState(false)
-    const [render, setRender] = useState(false);
 
-    const [formData, setFormData] = useState({
-        search: '',
-        slug: ''
-    })
-    const {
-        slug,
-        search
-    } = formData
+
+    const params = useParams()
+    const search = params.search
+    const slug = params.slug
+
 
     useEffect(() => {
-        get_categories()
-        get_stores(),
-            window.scrollTo(0, 0)
+        window.scrollTo(0, 0)
+        get_search_stores(slug, search)
     }, [])
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
-
-    const onSubmit = e => {
-        e.preventDefault()
-        get_search_stores(search, slug)
-        setRender(!render)
-    }
-
-    const onBuscar = e => {
-        e.preventDefault()
-        get_search_stores(search, slug)
-        setRender(!render)
-    }
-
-    if (render) {
-        return <Navigate to='/search/stores' />;
-    }
-
-    const showStores = () => {
-        let results = []
-        let display = []
-
-        if (
-            stores &&
-            stores !== null &&
-            stores !== undefined
-        ) {
-            stores.map((store, index) => {
-                return display.push(
-                    <div key={index}>
-                        <StoreCard store={store} />
-                    </div>
-                );
-            });
-        }
-
-        for (let i = 0; i < display.length; i += 3) {
-            results.push(
-                <div key={i} className="relative max-w-7xl mx-auto">
-                    <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
-                        {display[i] ? display[i] : <div className=''></div>}
-                        {display[i + 1] ? display[i + 1] : <div className=''></div>}
-                        {display[i + 2] ? display[i + 2] : <div className=''></div>}
-                    </div>
-                </div>
-            )
-        }
-        return results
-    }
 
     return (
         <Layout>
-            <div >
+            <Helmet>
+                <title>Ruvlo | {search}</title>
+                <meta name="description" content="Lo que sale en google" />
+                <meta name="keywords" content='palabras para google' />
+                <meta name="robots" content='all' />
+                <link rel="canonical" href="https://www.ruvlo.com/" />
+                <meta name="author" content='Ruvlo' />
+                <meta name="publisher" content='Ruvlo' />
+
+                {/* Social Media Tags */}
+                <meta property="og:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta property="og:description" content='descripcion.' />
+                <meta property="og:url" content="https://www.ruvlo.com/" />
+                <meta property="og:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+
+                <meta name="twitter:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta
+                    name="twitter:description"
+                    content='descripcion.'
+                />
+                <meta name="twitter:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Helmet>
+            <div>
                 <div>
                     {/* Mobile filter dialog */}
-                    <ListStoreCategoriesMobile
-                        categories={categories}
-                        onSubmit={onSubmit}
-                        onChange={onChange}
-                        loading_category_store={loading_category_store}
-                        mobileFiltersOpen={mobileFiltersOpen}
-                        setMobileFiltersOpen={setMobileFiltersOpen}
-                    />
+                    <Transition.Root show={mobileFiltersOpen} as={Fragment}>
+                        <Dialog as="div" className="relative z-[100] lg:hidden" onClose={setMobileFiltersOpen}>
+                            <Transition.Child
+                                as={Fragment}
+                                enter="transition-opacity ease-linear duration-300"
+                                enterFrom="opacity-0"
+                                enterTo="opacity-100"
+                                leave="transition-opacity ease-linear duration-300"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                            >
+                                <div className="fixed inset-0 bg-black bg-opacity-25" />
+                            </Transition.Child>
 
-                    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="relative z-10 flex items-baseline justify-between pt-14 pb-6 border-b border-stone-600">
-                            <div className="w-3/4" >
-                                <SearchBox
-                                    search={search}
-                                    onChange={onChange}
-                                    onSubmit={onBuscar}
-                                    categories={categories} />
+                            <div className="fixed inset-0 z-40 flex">
+                                <Transition.Child
+                                    as={Fragment}
+                                    enter="transition ease-in-out duration-300 transform"
+                                    enterFrom="translate-x-full"
+                                    enterTo="translate-x-0"
+                                    leave="transition ease-in-out duration-300 transform"
+                                    leaveFrom="translate-x-0"
+                                    leaveTo="translate-x-full"
+                                >
+                                    <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                                        <div className="flex items-center justify-between px-4">
+                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                                            <button
+                                                type="button"
+                                                className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                                                onClick={() => setMobileFiltersOpen(false)}
+                                            >
+                                                <span className="sr-only">Close menu</span>
+                                                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                                            </button>
+                                        </div>
+
+                                        {/* Filters */}
+                                        <LoadingStores />
+                                        <LoadingStores />
+                                        <LoadingStores />
+                                    </Dialog.Panel>
+                                </Transition.Child>
                             </div>
-                            <div className="flex items-center overflow-hidden mx-auto">
-                                <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl max-lg:hidden">
-                                    Tiendas
-                                </h2>
+                        </Dialog>
+                    </Transition.Root>
+
+                    <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
+                            <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white">
+                                Resultados de búsqueda: {count}
+                            </h2>
+
+                            <div className="flex items-center">
+                                {/* <Menu as="div" className="relative inline-block text-left">
+                                    <div>
+                                        <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                                            Sort
+                                            <ChevronDownIcon
+                                                className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                                aria-hidden="true"
+                                            />
+                                        </Menu.Button>
+                                    </div>
+
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <div className="py-1">
+                                                {sortOptions.map((option) => (
+                                                    <Menu.Item key={option.name}>
+                                                        {({ active }) => (
+                                                            <a
+                                                                href={option.href}
+                                                                className={classNames(
+                                                                    option.current ? 'font-medium text-gray-900' : 'text-gray-500',
+                                                                    active ? 'bg-gray-100' : '',
+                                                                    'block px-4 py-2 text-sm'
+                                                                )}
+                                                            >
+                                                                {option.name}
+                                                            </a>
+                                                        )}
+                                                    </Menu.Item>
+                                                ))}
+                                            </div>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu> */}
+
+                                {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+                                    <span className="sr-only">View grid</span>
+                                    <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+                                </button> */}
                                 <button
                                     type="button"
-                                    className="p-2 -m-2 ml-4 sm:ml-6 text-gray-400 hover:text-gray-500 lg:hidden"
+                                    className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
                                     onClick={() => setMobileFiltersOpen(true)}
                                 >
-                                    <span className="sr-only">Categorias</span>
-                                    <h2 className="text-3xl tracking-tight font-bold text-color_letra_blanca sm:text-4xl">
-                                        <AdjustmentsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
-                                    </h2>
+                                    <span className="sr-only">Filters</span>
+                                    <FunnelIcon className="h-5 w-5" aria-hidden="true" />
                                 </button>
                             </div>
                         </div>
-                        <div aria-labelledby="products-heading" className="pt-6 pb-24">
-                            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
+
+                        <section aria-labelledby="products-heading" className="pb-24 pt-6">
+                            <h2 id="products-heading" className="sr-only">
+                                Products
+                            </h2>
+
+                            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                                 {/* Filters */}
-                                {loading_category_store ?
-                                    <LoadingCategoryStore />
-                                    :
-                                    <>
-                                        <ListStoreCategoriesDesktop
-                                            categories={categories}
-                                            onSubmit={onSubmit}
-                                            onChange={onChange}
-                                        />
-                                    </>
-                                }
+                                <form className="hidden lg:block">
+                                    <h3 className="sr-only">Categories</h3>
+                                    <LoadingStores />
+                                    <LoadingStores />
+                                    <LoadingStores />
+
+
+                                </form>
+
                                 {/* Product grid */}
                                 <div className="lg:col-span-3">
                                     {loading ?
+
                                         <LoadingStores />
                                         :
                                         <>
-
-                                            {stores && showStores()}
+                                            <StoreList stores={stores && stores} get_store_list_page={get_search_stores_page} slug={slug} search={search} count={count && count} />
                                         </>
                                     }
                                 </div>
                             </div>
-                        </div>
-                        <div className="pb-10">
-                            <SmallSetPagination
-                                list_page={get_stores_list_page}
-                                list={stores && stores}
-                                count={count && count} />
-                        </div>
+                        </section>
                     </main>
                 </div>
             </div>
+
+
         </Layout >
     )
 }
 
 const mapStateToProps = state => ({
-    categories: state.Store_Categories.categories,
-    stores: state.Stores.stores,
-    search_stores: state.Stores.search_stores,
-    loading: state.Stores.loading,
-    loading_category_store: state.Store_Categories.loading_category_store,
+    stores: state.Stores.search_stores,
     count: state.Stores.count,
     next: state.Stores.next,
-    previous: state.Stores.previous
+    previous: state.Stores.previous,
+    loading: state.Stores.loading
 })
 
 export default connect(mapStateToProps, {
-    get_categories,
-    get_stores,
     get_search_stores,
-    get_stores_list_page
+    get_search_stores_page
 })(Mall)

@@ -1,65 +1,45 @@
 import { Provider } from 'react-redux'
 import store from './store.js'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-import Home from './containers/Home/home';
-import Error404 from './containers/Errors/Error404.jsx';
-{/* Authentication */}
-import SignIn from './containers/auth/SignIn.jsx';
-import SignUp from './containers/auth/SignUp.jsx';
-import Activate from './containers/auth/Activate.jsx';
-import Reset_password from './containers/auth/Reset_password.jsx';
-import Reset_password_new from './containers/auth/Reset_password_new.jsx';
-
-import Conditions from './containers/Home/Conditions.jsx';
-
-import Dashboard from './containers/Profile/Dashboard.jsx';
-
-import Mall from './containers/Home/Mall.jsx';
-import StoreDetail from './containers/Store/StoreDetail.jsx';
-import Category from './components/store/Category.jsx';
-
+import AnimatedRoutes from './Routes.jsx';
 
 
 function App() {
   return (
-    <Provider store={store}>
-    <Router>
-      <Routes>
-        <Route path="*" element={<Error404/>}/>
+    <HelmetProvider>
+      <Helmet>
+        <title>Ruvlo | Busqueda tiendas</title>
+        <meta name="description" content="Lo que sale en google" />
+        <meta name="keywords" content='palabras para google' />
+        <meta name="robots" content='all' />
+        <link rel="canonical" href="https://www.ruvlo.com/" />
+        <meta name="author" content='Ruvlo' />
+        <meta name="publisher" content='Ruvlo' />
 
-        <Route exact path='/' element={<Home />} />
+        {/* Social Media Tags */}
+        <meta property="og:title" content='Ruvlo |  Busqueda tiendas' />
+        <meta property="og:description" content='descripcion.' />
+        <meta property="og:url" content="https://www.ruvlo.com/" />
+        <meta property="og:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
 
-        {/* Authentication */}
-        <Route exact path='/login' element={<SignIn/>}/>
-        <Route exact path='/signup' element={<SignUp/>}/>
-        <Route exact path="/activate/:uid/:token" element={<Activate/>} />
-
-        
-
-        <Route exact path='/reset_password' element={<Reset_password/>}/>
-        <Route path='/password/reset/confirm/:uid/:token' element={<Reset_password_new/>} />
-
-        <Route exact path='/conditions' element={<Conditions/>}/>
-
-        <Route exact path='/dashboard' element={<Dashboard/>}/>
-
-        <Route exact path='/mall' element={<Mall/>}/>
-        <Route exact path='/store/:storeSlug' element={<StoreDetail/>}/>
-        <Route path="/category/:slug" element={<Category />} />
-
-
-
+        <meta name="twitter:title" content='Ruvlo |  Busqueda tiendas' />
+        <meta
+          name="twitter:description"
+          content='descripcion.'
+        />
+        <meta name="twitter:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+      <Provider store={store}>
+        <Router>
+         <AnimatedRoutes/>
+        </Router>
+      </Provider>
+    </HelmetProvider>
 
 
-
-
-
-
-      </Routes>
-
-    </Router>
-    </Provider>
 
   )
 }

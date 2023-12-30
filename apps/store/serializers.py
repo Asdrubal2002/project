@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Store
 from apps.store_category.serializers import CategorySerializer
-
+from apps.locations.serializers import CiudadSerializer
 
 class StoreSerializer(serializers.ModelSerializer):
     category=CategorySerializer()
+    city=CiudadSerializer()
     class Meta:
         model = Store
         fields = [
@@ -28,5 +29,6 @@ class StoreSerializer(serializers.ModelSerializer):
             'slug',
             'likes',
             'dislikes',
+            'city'
         ]
         

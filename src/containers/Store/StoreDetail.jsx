@@ -13,6 +13,7 @@ import { ClockIcon, MapIcon, CheckBadgeIcon } from "@heroicons/react/24/outline"
 import LoadingStore from "../../components/store/LoadingStore";
 import { ConetenedorBanner, ConetenedorBanner1, ConetenedorInfo, ConetenedorInfo1, ConetenedorInfo2, ConetenedorProfile, ConetenedorProfile1, ConetenedorProfile2, ConetenedorProfile3, EspacioContenedor, Principal } from "../../components/store/styles/LoadingStore";
 import { BotonesMeGustaNOMegusta, ContenedorEstadists, ContenedorEstadists1, ContenedorGraficaEsdistics, ContenedorInfoUbication, ContenedorInfoUbication1, DescriptionStore, EncabezadoContenedorEstadistics, EspacioPhotos, ListaGraficaEsdistics, Photo, PrimerItemLinea, PrimerItemLinea1, PrimerItemLinea2, PrimerItemLinea3, PrimerItemLineaFigura, PrimerItemLineaTexto, PrimerItemLineaTexto1, PrimerItemLineaTexto2, StoreProfile, TituloEstadistics, TituloEstadisticsDescr } from "./styles/StoreDetail";
+import { Helmet } from "react-helmet";
 
 const StoreDetail = ({
     get_store,
@@ -33,6 +34,8 @@ const StoreDetail = ({
 
     return (
         <Layout>
+           
+
             {loading ?
                 <LoadingStore />
                 :

@@ -102,7 +102,7 @@ class ListSearchView(APIView):
                 paginator = SmallSetPagination()
                 results = paginator.paginate_queryset(search_results, request)
                 serializer = StoreSerializer(results, many=True)
-                return paginator.get_paginated_response({'stores': serializer.data})
+                return paginator.get_paginated_response({'search_stores': serializer.data})
             
             if not Category.objects.filter(slug=slug).exists():
                     return Response(
@@ -132,12 +132,12 @@ class ListSearchView(APIView):
                     ).filter(category__in=filtered_categories)
 
           
-            paginator = SmallSetPagination()
+            paginator = LargeSetPagination()
             results = paginator.paginate_queryset(search_results, request)
             serializer = StoreSerializer(results, many=True)
-            return paginator.get_paginated_response({'stores': serializer.data})
+            return paginator.get_paginated_response({'search_stores': serializer.data})
         else:
-            return Response({'error':'No posts found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'No stores found'}, status=status.HTTP_404_NOT_FOUND)
 
 class ListRelatedView(APIView):
     permission_classes = (permissions.AllowAny, )
@@ -245,6 +245,6 @@ class ListStoreByCategoryView(APIView):
             serializer = StoreSerializer(results, many=True)
            
 
-            return paginator.get_paginated_response({'stores': serializer.data})
+            return paginator.get_paginated_response({'store_list_category': serializer.data})
         else:
             return Response({'error':'No stores found'}, status=status.HTTP_404_NOT_FOUND)

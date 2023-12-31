@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 export const Photo = tw.img`
     w-full 
     h-full 
-    object-cover
+    object-cover 
+    object-center
 `;
 
 export const EspacioPhotos = tw.div`
@@ -31,19 +32,15 @@ export const StoreProfile = tw.img`
 `;
 
 export const BotonesMeGustaNOMegusta = tw(Link)` 
-    rounded-3xl 
+    rounded-lg 
     bg-azul_corp 
-    px-3.5 
-    py-2.5 
+    px-4 py-2  
     text-sm 
     font-semibold 
     text-white 
-    shadow-sm 
+    shadow-md 
     hover:bg-azul_corp_ho 
-    focus-visible:outline 
-    focus-visible:outline-2 
-    focus-visible:outline-offset-2 
-    focus-visible:outline-indigo-600
+    hover:shadow-lg  
 `;
 
 export const DescriptionStore = tw.p`
@@ -56,16 +53,14 @@ export const DescriptionStore = tw.p`
 export const ContenedorInfoUbication = tw.div`
     inline-flex 
     grid-cols-4 
-    mt-5
+    my-10
 `;
 
 export const ContenedorInfoUbication1 = tw.p`
-    mt-2 
     max-w-4xl 
-    text-base 
+    text-sm 
     mx-1 
     text-color_letra_blanca 
-    cursor-default
 `;
 
 export const ContenedorEstadists = tw.div`

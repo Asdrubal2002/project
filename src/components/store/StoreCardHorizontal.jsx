@@ -1,3 +1,4 @@
+import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -30,7 +31,7 @@ function StoreCardHorizontal({ data, index }) {
 
         <div className="w-full flex justify-between items-center text-xs">
           <div className="text-gray-300">
-          {data.city.nombre}
+            {data.city.nombre} 
           </div>
           <a
             href={''}
@@ -44,7 +45,7 @@ function StoreCardHorizontal({ data, index }) {
           <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-300 group-hover:text-azul_corp_ho">
             <Link to={`/store/${data.slug}`}>
               <span className="absolute inset-0" />
-              {data.name}
+              {data.name}  {data.verified ? <CheckBadgeIcon className="h-5 w-5 inline-block text-blue-500" /> : <></>}
             </Link>
           </h3>
           <p className="mt-5 text-sm leading-6 text-gray-300">{data.description.length > 150 ? data.description.slice(0, 300) : data.description}</p>

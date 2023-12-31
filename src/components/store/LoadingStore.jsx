@@ -28,9 +28,7 @@ export default function LoadingStore() {
                                         <ConetenedorInfo1>
                                             <ConetenedorMegusta />
                                         </ConetenedorInfo1>
-                                        <ConetenedorInfo1>
-                                            <ConetenedorMegusta />
-                                        </ConetenedorInfo1>
+                                       
                                     </ConetenedorInfo>
                                 </ConetenedorProfile3>
                                 {/* Store name */}

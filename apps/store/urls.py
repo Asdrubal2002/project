@@ -11,12 +11,4 @@ urlpatterns = [
 
     path('by_category',ListStoreByCategoryView.as_view()),
 
-
-
-    #4:40:12 otra busqueda
-
-    #vamos en 5:00:32
-
-
-
 ]

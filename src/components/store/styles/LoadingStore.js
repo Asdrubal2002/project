@@ -6,7 +6,6 @@ export const Contenedor = tw.div`
 `;
 
 export const Principal = tw.main`
-    min-h-screen 
     w-full 
     overflow-x-hidden
 `;

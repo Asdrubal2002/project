@@ -71,4 +71,10 @@ export const GET_STORES_BY_SOLD_FAIL = 'GET_STORES_BY_SOLD_FAIL';
 export const FILTER_STORES_SUCCESS = 'FILTER_STORES_SUCCESS';
 export const FILTER_STORES_FAIL = 'FILTER_STORES_FAIL';
 
+// products ******************************************************
+export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
+export const GET_PRODUCTS_FAIL = 'GET_PRODUCTS_FAIL';
+
+export const SET_PRODUCTS_LOADING = 'SET_PRODUCTS_LOADING';
+export const REMOVE_PRODUCTS_LOADING = 'REMOVE_PRODUCTS_LOADING';
 

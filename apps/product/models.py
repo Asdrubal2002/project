@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from apps.store.models import Store
+from apps.product_category.models import Category
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
 import os
@@ -23,7 +24,7 @@ class Product(models.Model):
         verbose_name_plural = 'productos'
 
     name = models.CharField(max_length=255)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField(max_length=300, blank=False)
     photo = models.ImageField(default='store/product.jpg', upload_to=prodcut_directory_path_store)
     price = models.DecimalField(max_digits=10, decimal_places=2)

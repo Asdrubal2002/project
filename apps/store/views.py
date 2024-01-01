@@ -9,6 +9,7 @@ from django.db.models import Q
 from apps.store.models import Store
 from apps.store.serializers import StoreSerializer
 from apps.store_category.models import Category
+from django.shortcuts import get_object_or_404
 
 from .pagination import SmallSetPagination, MediumSetPagination, LargeSetPagination
 
@@ -19,23 +20,14 @@ class StoreDetailview(APIView):
     permission_classes = (permissions.AllowAny, )
 
     def get(self, request, storeSlug, format=None):
-        try:
-            store_id=storeSlug
-        except:
-            return Response(
-                {'error': 'Store slug must be an integer'},
-                status=status.HTTP_404_NOT_FOUND)
-        
-        if Store.objects.filter(slug=store_id).exists():
-            store = Store.objects.get(slug=store_id)
+       # Utilizar get_object_or_404 para simplificar la obtención del objeto o devolver un 404
+        store = get_object_or_404(Store, slug=storeSlug)
 
-            store = StoreSerializer(store)
+        # Serializar el objeto store
+        store_serialized = StoreSerializer(store)
 
-            return Response({'store': store.data}, status=status.HTTP_200_OK)
-        else:
-            return Response(
-                {'error': 'Store with this slug does not exist'},
-                status=status.HTTP_404_NOT_FOUND)
+        # Devolver la respuesta serializada
+        return Response({'store': store_serialized.data}, status=status.HTTP_200_OK)
         
 class ListStoresView(APIView):
     permission_classes = (permissions.AllowAny, )

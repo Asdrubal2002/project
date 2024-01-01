@@ -7,7 +7,7 @@ import { get_store, get_related_stores } from "../../redux/actions/stores";
 import { useEffect, useState, Fragment } from "react";
 
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon, UserGroupIcon, CakeIcon } from '@heroicons/react/24/solid'
-import { get_products } from "../../redux/actions/products";
+//import { get_products } from "../../redux/actions/products";
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 
 import { ClockIcon, MapIcon, GlobeAmericasIcon } from "@heroicons/react/24/outline";
@@ -82,8 +82,8 @@ const StoreDetail = ({
     get_related_stores,
     store,
     loading,
-    get_products,
-    products
+    //get_products,
+    //products
 
 }) => {
 
@@ -100,7 +100,7 @@ const StoreDetail = ({
     useEffect(() => {
         get_store(storeSlug)
         get_related_stores(storeSlug)
-        get_products(storeSlug)
+        //get_products(storeSlug)
         window.scrollTo(0, 0);
     }, [])
 
@@ -397,7 +397,7 @@ const StoreDetail = ({
 
                                         {/* Product grid */}
                                         <div className="lg:col-span-3">
-                                            <div>
+                                            {/* <div>
                                                 <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-8">
                                                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                                                         {
@@ -429,7 +429,7 @@ const StoreDetail = ({
                                                             ))}
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
 
                                         </div>
                                     </div>
@@ -446,12 +446,12 @@ const StoreDetail = ({
 const mapStateToProps = state => ({
     store: state.Stores.store,
     loading: state.Stores.loading,
-    products: state.Products.products,
+    //products: state.Products.products,
 
 })
 
 export default connect(mapStateToProps, {
     get_store,
     get_related_stores,
-    get_products
+    //get_products
 })(StoreDetail)

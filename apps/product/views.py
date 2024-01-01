@@ -6,6 +6,8 @@ from .serializer import ProductSerializer
 from .models import Product
 from apps.store.models import Store
 from apps.product_category.models import Category
+from django.http import JsonResponse
+
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -54,8 +56,41 @@ class ProductsByStore(APIView):
         return Response({'products': products_serialized.data}, status=status.HTTP_200_OK)
 
 
-       
-        
+class SearchProductInView(APIView):
+    def get(self, request, format=None):
+            print("LLega")
+            slugCategory = request.query_params.get('c')
+            storeSlug = request.query_params.get('s')
+            content = request.query_params.get('b')
+
+            store = get_object_or_404(Store, slug=storeSlug)
+
+            print(store)
+
+            category = get_object_or_404(Category, store=store, slug=slugCategory)
+
+            print(category)
+
+            products = Product.objects.filter(category=category, name__icontains=content) | Product.objects.filter(category=category, description__icontains=content)
+
+            print(products)
+
+            if products.exists():
+                # Aquí deberías serializar los productos encontrados
+                products_serialized = [product.name for product in products]  # Ejemplo simple de serialización
+                return Response({'products': products_serialized})
+            else:
+                return Response({'error': 'No se encontraron productos que coincidan con la búsqueda'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+            return Response({'products':"Success"}, status=status.HTTP_200_OK)
+
+
+
+
         
         
         

@@ -5,6 +5,7 @@ import Profile from "./profile";
 import Store_Categories from "./store_categories";
 import Stores from "./stores";
 import Products from "./products";
+import Store_Categories_Products from "./product_categories";
 
 export default combineReducers ({
     Auth,
@@ -13,5 +14,5 @@ export default combineReducers ({
     Store_Categories,
     Stores,
     Products,
-
+    Store_Categories_Products,
 })

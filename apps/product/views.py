@@ -11,8 +11,10 @@ from django.http import JsonResponse
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from apps.store.pagination import SmallSetPagination
+from apps.store.pagination import SmallSetPagination, MediumSetPagination, LargeSetPagination
 from django.db.models import Prefetch
+
+
 
 # Create your views here.
 
@@ -48,12 +50,16 @@ class ProductsByStore(APIView):
         categories = Category.objects.filter(store=store)
 
         # Obtener todos los productos que pertenecen a esas categorías
-        products = Product.objects.filter(category__in=categories, is_active=True)
+        products = Product.objects.filter(category__in=categories, is_active=True).order_by('date_created')
         # Serializar los productos
-        products_serialized = ProductSerializer(products, many=True)
+
+        paginator = MediumSetPagination()
+        results = paginator.paginate_queryset(products, request)
+        products_serialized = ProductSerializer(results, many=True)
 
         # Devolver la lista de productos serializados
-        return Response({'products': products_serialized.data}, status=status.HTTP_200_OK)
+        return paginator.get_paginated_response({'products': products_serialized.data})
+
 
 
 class SearchProductInView(APIView):

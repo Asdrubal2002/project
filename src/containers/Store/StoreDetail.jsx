@@ -20,6 +20,13 @@ import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/24/solid'
 
+import { get_categories_products_store } from "../../redux/actions/product_categories";
+import LoadingCategoriesStores from "../../components/store/LoadingCategoriesStores";
+
+import { get_products, get_products_list_page } from "../../redux/actions/products";
+import LoadingStores from "../../components/home/LoadingStores";
+import ProductList from "../../components/store/ProductList";
+
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
     { name: 'Best Rating', href: '#', current: false },
@@ -74,7 +81,7 @@ const filters = [
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
-  }
+}
 
 
 const StoreDetail = ({
@@ -82,17 +89,21 @@ const StoreDetail = ({
     get_related_stores,
     store,
     loading,
-    //get_products,
-    //products
+    get_categories_products_store,
+    categories,
+    loading_categories,
+    get_products,
+    get_products_list_page,
+    products,
+    loading_products,
+    count,
+    next,
+    previous
+
 
 }) => {
 
-    
-
-    const [activeTab, setActiveTab] = useState('tab1');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-
-
 
     const params = useParams()
     const storeSlug = params.storeSlug
@@ -100,7 +111,8 @@ const StoreDetail = ({
     useEffect(() => {
         get_store(storeSlug)
         get_related_stores(storeSlug)
-        //get_products(storeSlug)
+        get_categories_products_store(storeSlug)
+        get_products(storeSlug)
         window.scrollTo(0, 0);
     }, [])
 
@@ -134,7 +146,7 @@ const StoreDetail = ({
                                                 <ConetenedorInfo1>
                                                     <BotonesMeGustaNOMegusta to="/mall">Me gusta</BotonesMeGustaNOMegusta>
                                                 </ConetenedorInfo1>
-                                               
+
                                             </ConetenedorInfo>
                                         </ConetenedorProfile3>
                                         {/* Store name */}
@@ -143,9 +155,9 @@ const StoreDetail = ({
                                                 {store && store.name}
                                                 {store && store.verified ? <CheckBadgeIcon className="h-5 w-5 inline-block text-blue-500" /> : <></>}
 
-                                               
 
-                                                
+
+
                                             </h1>
                                         </ConetenedorInfo2>
                                         {/* Store description */}
@@ -273,7 +285,7 @@ const StoreDetail = ({
                             </Transition.Root>
                             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12">
-                                    <h1 className="text-4xl font-bold tracking-tight text-gray-300">Productos</h1>
+                                    <h1 className="text-4xl font-bold tracking-tight text-gray-300">{count} Productos</h1>
 
                                     <div className="flex items-center">
                                         <Menu as="div" className="relative inline-block text-left">
@@ -338,98 +350,35 @@ const StoreDetail = ({
                                     <h2 id="products-heading" className="sr-only">
                                         Products
                                     </h2>
-
                                     <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                                         {/* Filters */}
                                         <form className="hidden lg:block">
                                             <h3 className="sr-only">Categories</h3>
-                                            <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                                                {subCategories.map((category) => (
-                                                    <li key={category.name}>
-                                                        <a href={category.href}>{category.name}</a>
-                                                    </li>
-                                                ))}
+                                            <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-200">
+                                                {loading_categories ?
+                                                    <LoadingCategoriesStores />
+                                                    : <>
+                                                        {
+                                                            categories &&
+                                                            categories !== null &&
+                                                            categories !== undefined &&
+                                                            categories.map((category) => (
+                                                                <li key={category.name}>
+                                                                    <a href={category.href}>{category.name}</a>
+                                                                </li>
+                                                            ))}
+                                                    </>}
                                             </ul>
-
-                                            {filters.map((section) => (
-                                                <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
-                                                    {({ open }) => (
-                                                        <>
-                                                            <h3 className="-my-3 flow-root">
-                                                                <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                                    <span className="font-medium text-gray-900">{section.name}</span>
-                                                                    <span className="ml-6 flex items-center">
-                                                                        {open ? (
-                                                                            <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                                                                        ) : (
-                                                                            <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                                                                        )}
-                                                                    </span>
-                                                                </Disclosure.Button>
-                                                            </h3>
-                                                            <Disclosure.Panel className="pt-6">
-                                                                <div className="space-y-4">
-                                                                    {section.options.map((option, optionIdx) => (
-                                                                        <div key={option.value} className="flex items-center">
-                                                                            <input
-                                                                                id={`filter-${section.id}-${optionIdx}`}
-                                                                                name={`${section.id}[]`}
-                                                                                defaultValue={option.value}
-                                                                                type="checkbox"
-                                                                                defaultChecked={option.checked}
-                                                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                                            />
-                                                                            <label
-                                                                                htmlFor={`filter-${section.id}-${optionIdx}`}
-                                                                                className="ml-3 text-sm text-gray-600"
-                                                                            >
-                                                                                {option.label}
-                                                                            </label>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </Disclosure.Panel>
-                                                        </>
-                                                    )}
-                                                </Disclosure>
-                                            ))}
                                         </form>
 
                                         {/* Product grid */}
                                         <div className="lg:col-span-3">
-                                            {/* <div>
-                                                <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-8">
-                                                    <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                                                        {
-                                                            products &&
-                                                            products !== null &&
-                                                            products !== undefined &&
-                                                            products.map((product) => (
-                                                                <div key={product.id} className="group relative">
-                                                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                                                                        <img
-                                                                            src={product.photo}
-                                                                            alt={product.imageAlt}
-                                                                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                                                                        />
-                                                                    </div>
-                                                                    <div className="mt-4 flex justify-between">
-                                                                        <div>
-                                                                            <h3 className="text-sm text-gray-700">
-                                                                                <a href={product.href}>
-                                                                                    <span aria-hidden="true" className="absolute inset-0" />
-                                                                                    {product.name}
-                                                                                </a>
-                                                                            </h3>
-                                                                            <p className="mt-1 text-sm text-gray-500">{product.description}</p>
-                                                                        </div>
-                                                                        <p className="text-sm font-medium text-gray-900">{product.price}</p>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                    </div>
-                                                </div>
-                                            </div> */}
+
+                                            {loading_products ?
+                                                <LoadingStores /> : <>
+
+                                                    <ProductList products={products && products} get_products_list_page={get_products_list_page} storeSlug={storeSlug} count={count && count} />
+                                                </>}
 
                                         </div>
                                     </div>
@@ -446,12 +395,20 @@ const StoreDetail = ({
 const mapStateToProps = state => ({
     store: state.Stores.store,
     loading: state.Stores.loading,
-    //products: state.Products.products,
+    categories: state.Store_Categories_Products.categories,
+    loading_categories: state.Store_Categories_Products.loading_category_products,
+    products: state.Products.products,
+    loading_products: state.Products.loading_products,
+    count: state.Products.count,
+    next: state.Products.next,
+    previous: state.Products.previous,
 
 })
 
 export default connect(mapStateToProps, {
     get_store,
     get_related_stores,
-    //get_products
+    get_categories_products_store,
+    get_products,
+    get_products_list_page
 })(StoreDetail)

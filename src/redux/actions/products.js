@@ -17,7 +17,44 @@ export const get_products = (storeSlug) => async dispatch => {
     };
 
     try {
-        const res = await axios.get(`${apiUrl}/api/product/product/${storeSlug}`, config);
+        const res = await axios.get(`${apiUrl}/api/product/products/${storeSlug}`, config);
+
+        if (res.status === 200) {
+            dispatch({
+                type: GET_PRODUCTS_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: GET_PRODUCTS_FAIL
+            });
+        }
+        dispatch({
+            type: REMOVE_PRODUCTS_LOADING
+        });
+    } catch (err) {
+        dispatch({
+            type: GET_PRODUCTS_FAIL
+        });
+        dispatch({
+            type: REMOVE_PRODUCTS_LOADING
+        });
+    }
+}
+
+export const get_products_list_page = (storeSlug, page) => async dispatch => {
+    dispatch({
+        type:SET_PRODUCTS_LOADING
+    });
+
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+
+    try {
+        const res = await axios.get(`${apiUrl}/api/product/products/${storeSlug}?p=${page}`, config);
 
         if (res.status === 200) {
             dispatch({

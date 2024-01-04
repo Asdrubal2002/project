@@ -24,6 +24,9 @@ function Searcher({
         slug: ''
     })
 
+    const [error, setError] = useState('');
+
+
     const {
         slug,
         search
@@ -33,37 +36,42 @@ function Searcher({
 
     const onSubmit = e => {
         e.preventDefault()
+        if (!slug || !search) {
+            setError("Por favor, selecciona una categoría y escribe un término de búsqueda.");
+            return;
+        }
         setTimeout(() => navigate(`/search/${slug}/${search}`), 0.2);
     }
     return (
-        <div className="mt-2 flex items-center">
-            <form onSubmit={e => onSubmit(e)} className="flex items-center flex-1">
-                {/* Input de desplegable con autocompletado */}
-                <select
-                    name='slug'
-                    onChange={e => onChange(e)}
-                    className="bg-stone-800 py-2 pl-4 pr-2 rounded-l-full text-gray-300 text-sm leading-5 focus:outline-none w-1/3"
-                >
-                    <option value="" disabled hidden>Selecciona una opción</option>
-                    {
-                        categories &&
-                        categories !== null &&
-                        categories !== undefined &&
-                        categories.map((category, index) => (
-                            <option key={index} value={category.slug}>
-                                {category.name}
-                            </option>
-                        ))
-                    }
-                </select>
+        <>
+            <div className="mt-2 flex items-center">
+                <form onSubmit={e => onSubmit(e)} className="flex items-center flex-1">
+                    {/* Input de desplegable con autocompletado */}
+                    <select
+                        name='slug'
+                        onChange={e => onChange(e)}
+                        className="bg-stone-800 py-2 pl-4 pr-2 rounded-l-full text-gray-300 text-sm leading-5 focus:outline-none w-1/3"
+                    >
+                        <option value="" disabled hidden>Selecciona una opción</option>
+                        {
+                            categories &&
+                            categories !== null &&
+                            categories !== undefined &&
+                            categories.map((category, index) => (
+                                <option key={index} value={category.slug}>
+                                    {category.name}
+                                </option>
+                            ))
+                        }
+                    </select>
 
-                {/* Input de texto más largo */}
-                <input
-                    type="text"
-                    name="search"
-                    onChange={e => onChange(e)}
-                    value={search}
-                    className="
+                    {/* Input de texto más largo */}
+                    <input
+                        type="text"
+                        name="search"
+                        onChange={e => onChange(e)}
+                        value={search}
+                        className="
             flex-1
             bg-stone-800
             py-2 
@@ -75,10 +83,16 @@ function Searcher({
             leading-5
             focus:outline-none
             w-full md:w-96"
-                    placeholder="Busca tu localidad, barrio, estado, tienda"
-                />
-            </form>
-        </div>
+                        placeholder="Busca tu localidad, barrio, estado, tienda"
+                    />
+                    {/* Mensaje de error debajo de los campos */}
+
+                </form>
+
+            </div>
+            {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+        </>
+
     )
 }
 

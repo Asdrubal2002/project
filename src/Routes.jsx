@@ -16,6 +16,7 @@ import Dashboard from './containers/Profile/Dashboard.jsx';
 
 import Mall from './containers/Home/Mall.jsx';
 import StoreDetail from './containers/Store/StoreDetail.jsx';
+import ProductsByCategory from './components/store/ProductsByCategory.jsx';
 
 function AnimatedRoutes() {
   return (
@@ -42,6 +43,8 @@ function AnimatedRoutes() {
         
 
         <Route exact path='/store/:storeSlug' element={<StoreDetail />} />
+        <Route exact path='/products_by_category/:storeSlug/:categorySlug' element={<ProductsByCategory />} />
+
 
 
       </Routes>

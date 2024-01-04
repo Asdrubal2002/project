@@ -30,16 +30,15 @@ class ListProductsByCategoryView(APIView):
         # Filtrar los productos por categoría y por si están activos
         products = Product.objects.filter(category=category, is_active=True)
 
-        # Crear una lista de productos con los detalles que necesitas
-        products_list = [{
-            'name': product.name,
-            'description': product.description,
-            'price': product.price,
-            'photo': product.photo.url if product.photo else None,
-            # Añade más campos si es necesario
-        } for product in products]
+        print(products)
 
-        return Response({'products': products_list})
+        paginator = LargeSetPagination()
+        results = paginator.paginate_queryset(products, request)
+        products_serialized = ProductSerializer(results, many=True)
+
+        # Devolver la lista de productos serializados
+        return paginator.get_paginated_response({'products': products_serialized.data})
+
 
 
 class ProductsByStore(APIView):
@@ -53,7 +52,7 @@ class ProductsByStore(APIView):
         products = Product.objects.filter(category__in=categories, is_active=True).order_by('date_created')
         # Serializar los productos
 
-        paginator = MediumSetPagination()
+        paginator = LargeSetPagination()
         results = paginator.paginate_queryset(products, request)
         products_serialized = ProductSerializer(results, many=True)
 

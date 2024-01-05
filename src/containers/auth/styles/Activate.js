@@ -35,7 +35,7 @@ export const MensajePrincipal = tw.h2`
 export const ContenidoMensaje = tw.p`
     mt-3 
     max-w-3xl 
-    text-lg 
+    text-base    
     text-gray-300
 `;
 
@@ -81,7 +81,8 @@ export const ContenedorExcel1 = tw.div`
 export const BotonActivar = tw.button`
     flex items-center 
     justify-center 
-    rounded-md 
+    rounded-md
+    font-semibold   
     border 
     border-transparent 
     bg-azul_corp

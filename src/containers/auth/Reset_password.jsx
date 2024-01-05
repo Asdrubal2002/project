@@ -12,6 +12,7 @@ import { Rings } from "react-loader-spinner";
 import { reset_password } from "../../redux/actions/auth";
 
 import { Navigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const Reset_password = ({ reset_password, loading }) => {
 
@@ -26,21 +27,44 @@ const Reset_password = ({ reset_password, loading }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-    
+
         if (email.valido === "true") {
-          reset_password(email.campo);
-          setRequestSent(true)
-          window.scrollTo(0, 0);
-          cambiarFormularioValido(true);
-          changeMail({ campo: "", valido: null });
+            reset_password(email.campo);
+            setRequestSent(true)
+            window.scrollTo(0, 0);
+            cambiarFormularioValido(true);
+            changeMail({ campo: "", valido: null });
         } else {
-          cambiarFormularioValido(false);
+            cambiarFormularioValido(false);
         }
-      };
+    };
 
 
     return (
         <Layout>
+            <Helmet>
+                <title>Ruvlo | Recuperación contraseña</title>
+                <meta name="description" content="Lo que sale en google" />
+                <meta name="keywords" content='palabras para google' />
+                <meta name="robots" content='all' />
+                <link rel="canonical" href="https://www.ruvlo.com/" />
+                <meta name="author" content='Ruvlo' />
+                <meta name="publisher" content='Ruvlo' />
+
+                {/* Social Media Tags */}
+                <meta property="og:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta property="og:description" content='descripcion.' />
+                <meta property="og:url" content="https://www.ruvlo.com/" />
+                <meta property="og:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+
+                <meta name="twitter:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta
+                    name="twitter:description"
+                    content='descripcion.'
+                />
+                <meta name="twitter:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Helmet>
             <>
                 <div className="grid grid-cols-1 md:grid-cols-2">
 
@@ -153,7 +177,7 @@ const Reset_password = ({ reset_password, loading }) => {
                                     </MensajeError>
                                 )}
 
-                             
+
                             </div>
                         </ContenedorFormulario2>
                     </ContenedorFormulario>

@@ -12,6 +12,7 @@ import { Rings } from "react-loader-spinner";
 
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const SignUp = ({ signup, loading }) => {
 
@@ -67,6 +68,29 @@ const SignUp = ({ signup, loading }) => {
     };
     return (
         <Layout>
+            <Helmet>
+                <title>Ruvlo | Crear cuenta</title>
+                <meta name="description" content="Lo que sale en google" />
+                <meta name="keywords" content='palabras para google' />
+                <meta name="robots" content='all' />
+                <link rel="canonical" href="https://www.ruvlo.com/" />
+                <meta name="author" content='Ruvlo' />
+                <meta name="publisher" content='Ruvlo' />
+
+                {/* Social Media Tags */}
+                <meta property="og:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta property="og:description" content='descripcion.' />
+                <meta property="og:url" content="https://www.ruvlo.com/" />
+                <meta property="og:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+
+                <meta name="twitter:title" content='Ruvlo |  Busqueda tiendas' />
+                <meta
+                    name="twitter:description"
+                    content='descripcion.'
+                />
+                <meta name="twitter:image" content='https://bafybeicwrhxloesdlojn3bxyjqnxgsagtd4sl53a7t4cn4vfe2abmybzua.ipfs.w3s.link/lightbnuilbg.jpg' />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Helmet>
             <>
                 <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="w-full px-4 pt-16">
@@ -115,13 +139,13 @@ const SignUp = ({ signup, loading }) => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                        Al acceder y utilizar Ruvlo, aceptas y te comprometes a cumplir con estos términos y condiciones.
-                                        <Link to="/conditions" className="text-blue-800 text-bold"> Términos y Condiciones</Link>
+                                            Al acceder y utilizar Ruvlo, aceptas y te comprometes a cumplir con estos términos y condiciones.
+                                            <Link to="/conditions" className="text-blue-800 text-bold"> Términos y Condiciones</Link>
                                         </Disclosure.Panel>
                                     </>
                                 )}
                             </Disclosure>
-                           
+
                         </div>
                     </div>
                     <ContenedorFormulario>

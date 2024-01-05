@@ -3,11 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .serializer import ProductSerializer
-from .models import Product
+from .models import Product, ViewCount
 from apps.store.models import Store
 from apps.product_category.models import Category
 from django.http import JsonResponse
-
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -40,7 +39,6 @@ class ListProductsByCategoryView(APIView):
         return paginator.get_paginated_response({'products': products_serialized.data})
 
 
-
 class ProductsByStore(APIView):
     def get(self, request, storeSlug, format=None):
         store = get_object_or_404(Store, slug=storeSlug)
@@ -59,10 +57,8 @@ class ProductsByStore(APIView):
         # Devolver la lista de productos serializados
         return paginator.get_paginated_response({'products': products_serialized.data})
 
-
-
 class SearchProductInView(APIView):
-    def get(self, request, format=None):
+     def get(self, request, format=None):
             print("LLega")
             slugCategory = request.query_params.get('c')
             storeSlug = request.query_params.get('s')
@@ -89,10 +85,30 @@ class SearchProductInView(APIView):
 
 
 
+class ProductDetailView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, slugProduct, format=None):
+        if Product.objects.filter(slugProduct=slugProduct).exists():
+            print(slugProduct)
+            product = Product.objects.get(slugProduct=slugProduct)
+            serializer = ProductSerializer(product)
+            print(serializer)
 
+            address = request.META.get('HTTP_X_FORWARDED_FOR')
+            if address:
+                ip = address.split(',')[-1].strip()
+            else:
+                ip = request.META.get('REMOTE_ADDR')
 
-            return Response({'products':"Success"}, status=status.HTTP_200_OK)
+            if not ViewCount.objects.filter(product=product, ip_address=ip):
+                view = ViewCount(product=product,ip_address=ip)
+                view.save()
+                product.views += 1
+                product.save()
 
+            return Response({'product':serializer.data})
+        else:
+            return Response({'error':'Post doesnt exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
 

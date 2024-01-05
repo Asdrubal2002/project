@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 import { get_search_stores, get_search_stores_page } from '../../redux/actions/stores';
 import StoreList from "../../components/store/StoreList";
 
-import { Dialog,  Transition } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import {  FunnelIcon } from '@heroicons/react/24/solid'
+import { FunnelIcon } from '@heroicons/react/24/solid'
 
 import LoadingStores from "../../components/home/LoadingStores";
 import { Helmet } from "react-helmet";
@@ -109,7 +109,9 @@ const Mall = ({
                                             </button>
                                         </div>
 
-                                        {/* Filters */}
+
+
+
                                         <LoadingStores />
                                         <LoadingStores />
                                         <LoadingStores />
@@ -193,6 +195,44 @@ const Mall = ({
                                 {/* Filters */}
                                 <form className="hidden lg:block">
                                     <h3 className="sr-only">Categories</h3>
+                                    <div className="bg-neutral-900 py-6 rounded-lg shadow">
+                                        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                                            <h2 className="text-2xl font-bold text-gray-300 mb-6">Centro atención</h2>
+                                            <div className="divide-y divide-gray-200">
+                                                {/* Noticia 1 */}
+                                                <div className="py-4">
+                                                    <a href="#" className="text-lg font-medium text-gray-300 hover:text-gray-400">Centro de compras</a>
+                                                    <p className="text-sm text-gray-400 mt-1">Breve descripción o extracto de la noticia...</p>
+                                                    <a href="#" className="text-sm font-medium text-azul_corp_ho hover:text-indigo-500 mt-2">Leer más</a>
+                                                </div>
+
+                                                {/* Noticia 2 */}
+                                                {/* Repite el bloque anterior para más noticias, cambiando los datos correspondientes */}
+
+                                                {/* Más noticias */}
+                                                <div className="py-4">
+                                                    <a href="#" className="text-base font-medium text-azul_corp_ho hover:text-indigo-500">Ver todas las noticias</a>
+                                                </div>
+                                            </div>
+                                            <div className="divide-y divide-gray-200">
+                                                {/* Noticia 1 */}
+                                                <div className="py-4">
+                                                    <a href="#" className="text-lg font-medium text-gray-300 hover:text-gray-400">Centro de citas</a>
+                                                    <p className="text-sm text-gray-400 mt-1">Breve descripción o extracto de la noticia...</p>
+                                                    <a href="#" className="text-sm font-medium text-azul_corp_ho hover:text-indigo-500 mt-2">Leer más</a>
+                                                </div>
+
+                                                {/* Noticia 2 */}
+                                                {/* Repite el bloque anterior para más noticias, cambiando los datos correspondientes */}
+
+                                                {/* Más noticias */}
+                                                <div className="py-4">
+                                                    <a href="#" className="text-base font-medium text-azul_corp_ho hover:text-indigo-500">Ver todas las noticias</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <LoadingStores />
                                     <LoadingStores />
                                     <LoadingStores />
